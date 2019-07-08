@@ -1,6 +1,7 @@
 import React, { Fragment, Component } from 'react'
 import Navbar from './components/layout/Navbar'
 import Users from './components/users/Users'
+import Search from './components/users/Search'
 import axios from 'axios'
 import './App.css'
 
@@ -26,6 +27,7 @@ class App extends Component {
 				{/* default props set in Navbar component can overwrite below */}
 				<Navbar />
 				<div className='container'>
+					<Search />
 					<Users loading={this.state.loading} users={this.state.users} />
 				</div>
 			</Fragment>
