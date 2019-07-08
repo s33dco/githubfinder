@@ -1,32 +1,29 @@
-import React, { Component } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 
-class UserItem extends Component {
-	// constructor() {
-	// 	super()
-	// 	// console.log(123)
-	// 	this.state = {
-	// 		id: 'id',
-	// 		login: 'mojombo',
-	// 		avatar_url: 'https://avatars0.githubusercontent.com/u/1?v=4',
-	// 		html_url: 'https://github.com/mojombo'
-	// 	}
-	// }
-
-	render() {
-		const { login, avatar_url, html_url } = this.props.user
-
-		return (
-			<div className='card text-center'>
-				<img src={avatar_url} alt='' className='round-img' style={{ width: '60px' }} />
-				<h3>{login}</h3>
-				<div>
-					<a href={html_url} className='btn btn-dark btn-sm my-1'>
-						More
-					</a>
-				</div>
+const UserItem = ({ user: { login, avatar_url, html_url } }) => {
+	return (
+		<div className='card text-center'>
+			<img src={avatar_url} alt='' className='round-img' style={{ width: '60px' }} />
+			<h3>{login}</h3>
+			<div>
+				<a href={html_url} className='btn btn-dark btn-sm my-1'>
+					More
+				</a>
 			</div>
-		)
-	}
+		</div>
+	)
+}
+
+UserItem.propTypes = {
+	user: PropTypes.object.isRequired
 }
 
 export default UserItem
+
+// refactored from class based component to stateless functional component as no state, only props
+
+// refactoring destructuring of props...
+// from const { login, avatar_url, html_url } = props.user
+// into
+// const UserItem = ({ user: { login, avatar_url, html_url } }) => {
