@@ -7,6 +7,7 @@ import Search from './components/users/Search'
 import Alert from './components/layout/Alert'
 import About from './components/pages/About'
 import axios from 'axios'
+import GithubState from './context/github/GithubState'
 import './App.css'
 
 const App = () => {
@@ -78,47 +79,49 @@ const App = () => {
 	}
 
 	return (
-		<Router>
-			<Fragment>
-				{/* default props set in Navbar component can overwrite below */}
-				<Navbar />
-				<div className='container'>
-					<Alert alert={alert} />
-					<Switch>
-						<Route
-							exact
-							path='/'
-							render={props => (
-								<Fragment>
-									<Search
-										searchUsers={searchUsers}
-										clearUsers={clearUsers}
-										setAlert={showAlert}
-										showClear={users.length > 0 ? true : false}
+		<GithubState>
+			<Router>
+				<Fragment>
+					{/* default props set in Navbar component can overwrite below */}
+					<Navbar />
+					<div className='container'>
+						<Alert alert={alert} />
+						<Switch>
+							<Route
+								exact
+								path='/'
+								render={props => (
+									<Fragment>
+										<Search
+											searchUsers={searchUsers}
+											clearUsers={clearUsers}
+											setAlert={showAlert}
+											showClear={users.length > 0 ? true : false}
+										/>
+										<Users loading={loading} users={users} />
+									</Fragment>
+								)}
+							/>
+							<Route exact path='/about' component={About} />
+							<Route
+								exact
+								path='/user/:login'
+								render={props => (
+									<User
+										{...props}
+										getUser={getUser}
+										getUserRepos={getUserRepos}
+										user={user}
+										repos={repos}
+										loading={loading}
 									/>
-									<Users loading={loading} users={users} />
-								</Fragment>
-							)}
-						/>
-						<Route exact path='/about' component={About} />
-						<Route
-							exact
-							path='/user/:login'
-							render={props => (
-								<User
-									{...props}
-									getUser={getUser}
-									getUserRepos={getUserRepos}
-									user={user}
-									repos={repos}
-									loading={loading}
-								/>
-							)}
-						/>
-					</Switch>
-				</div>
-			</Fragment>
-		</Router>
+								)}
+							/>
+						</Switch>
+					</div>
+				</Fragment>
+			</Router>
+		</GithubState>
 	)
 }
 
