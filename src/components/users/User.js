@@ -11,7 +11,8 @@ const User = ({ user, loading, getUser, getUserRepos, repos, match }) => {
 		getUser(match.params.login) // grab param from url :login
 		getUserRepos(match.params.login) // grab array of repos
 		// eslint has populated the brackets below
-	}, [getUser, getUserRepos, match.params.login]) // need second arguement to stop request loop, useEffect runs on anyupdate, the calls to getUser / getUserRepos are constantly updating the loop, ie it keeps making the requests. 2nd arguement [] allows conditions to beset for updating, empty brackets for just once. No conditions to reupdate.
+		// eslint-disable-next-line
+	}, []) // need second arguement to stop request loop, useEffect runs on anyupdate, the calls to getUser / getUserRepos are constantly updating the loop, ie it keeps making the requests. 2nd arguement [] allows conditions to beset for updating, empty brackets for just once. No conditions to reupdate.
 
 	// componentDidMount() {
 	// 	this.props.getUser(match.params.login) // grab param from url :login
