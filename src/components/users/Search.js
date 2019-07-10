@@ -1,58 +1,58 @@
-import React, { Component, Fragment } from 'react'
+import React, { useState, Fragment } from 'react'
 import PropTypes from 'prop-types'
 
-export class Search extends Component {
-	state = {
-		text: ''
-	}
+// refactor to funtional component with useStatee hook
 
-	static propTypes = {
-		searchUsers: PropTypes.func.isRequired,
-		clearUsers: PropTypes.func.isRequired,
-		showClear: PropTypes.bool.isRequired,
-		setAlert: PropTypes.func.isRequired
-	}
+const Search = ({ searchUsers, clearUsers, setAlert, showClear }) => {
+	// can't use state so destructure useState to
+	// [state name, function] = useState('initial value')
+	const [text, setText] = useState('')
 
-	onSubmit = e => {
+	// now function rather than class functions declared with const
+
+	const onSubmit = e => {
 		e.preventDefault()
-		if (this.state.text === '') {
-			this.props.setAlert('Please enter something', 'light')
+		if (text === '') {
+			setAlert('Please enter something', 'light')
 		} else {
-			this.props.searchUsers(this.state.text) // pass up to App as arguement to function
-			this.setState({ text: '' }) // reset from field
+			searchUsers(text) // pass up to App as arguement to function
+			setText('') // reset from field
 		}
 	}
-	clear = e => {
-		this.props.clear()
-		this.setState({ text: '' }) // reset from field
-	}
 
-	onChange = e => this.setState({ [e.target.name]: e.target.value }) // use bracket notation to get 'text' handy for multi use
+	const onChange = e => {
+		setText(e.target.value)
+	} // use bracket notation to get 'text' handy for multi use
 
-	render() {
-		const { showClear, clearUsers } = this.props
+	return (
+		<Fragment>
+			<form onSubmit={onSubmit} className='form'>
+				{/* controlled input with onChange event, component level state */}
+				<input
+					type='text'
+					name='text'
+					placeholder='Search Users...'
+					value={text}
+					onChange={onChange}
+				/>
+				<input type='submit' value='Search' className='btn btn-dark btn-block' />
+			</form>
+			{showClear && (
+				<button className='btn btn-light btn-block' onClick={clearUsers}>
+					Clear
+				</button>
+			)}
+		</Fragment>
+	)
+}
 
-		return (
-			<Fragment>
-				<form onSubmit={this.onSubmit} className='form'>
-					{/* controlled input with onChange event, component level state */}
-					<input
-						type='text'
-						name='text'
-						placeholder='Search Users...'
-						value={this.state.text}
-						onChange={this.onChange}
-					/>
-					<input type='submit' value='Search' className='btn btn-dark btn-block' />
-				</form>
-				{showClear && (
-					<button className='btn btn-light btn-block' onClick={clearUsers}>
-						Clear
-					</button>
-				)}
-			</Fragment>
-		)
-	}
+// as no longer class proptypes moved out..
+
+Search.propTypes = {
+	searchUsers: PropTypes.func.isRequired,
+	clearUsers: PropTypes.func.isRequired,
+	showClear: PropTypes.bool.isRequired,
+	setAlert: PropTypes.func.isRequired
 }
 
 export default Search
