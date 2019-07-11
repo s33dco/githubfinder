@@ -1,22 +1,23 @@
-import React, { useState, Fragment } from 'react'
+import React, { useState, useContext, Fragment } from 'react'
 import PropTypes from 'prop-types'
+import GithubContext from '../../context/github/githubContext'
 
-// refactor to funtional component with useStatee hook
+// bring in context
 
-const Search = ({ searchUsers, clearUsers, setAlert, showClear }) => {
-	// can't use state so destructure useState to
-	// [state name, function] = useState('initial value')
+const Search = ({ setAlert }) => {
+	// initialize context
+	const githubContext = useContext(GithubContext)
+
 	const [text, setText] = useState('')
-
-	// now function rather than class functions declared with const
 
 	const onSubmit = e => {
 		e.preventDefault()
 		if (text === '') {
 			setAlert('Please enter something', 'light')
 		} else {
-			searchUsers(text) // pass up to App as arguement to function
-			setText('') // reset from field
+			// use context
+			githubContext.searchUsers(text)
+			setText('')
 		}
 	}
 
@@ -37,8 +38,8 @@ const Search = ({ searchUsers, clearUsers, setAlert, showClear }) => {
 				/>
 				<input type='submit' value='Search' className='btn btn-dark btn-block' />
 			</form>
-			{showClear && (
-				<button className='btn btn-light btn-block' onClick={clearUsers}>
+			{githubContext.users.length > 0 && (
+				<button className='btn btn-light btn-block' onClick={githubContext.clearUsers}>
 					Clear
 				</button>
 			)}
@@ -49,9 +50,6 @@ const Search = ({ searchUsers, clearUsers, setAlert, showClear }) => {
 // as no longer class proptypes moved out..
 
 Search.propTypes = {
-	searchUsers: PropTypes.func.isRequired,
-	clearUsers: PropTypes.func.isRequired,
-	showClear: PropTypes.bool.isRequired,
 	setAlert: PropTypes.func.isRequired
 }
 
